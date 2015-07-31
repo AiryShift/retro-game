@@ -26,10 +26,14 @@ Partial Class game
         Me.universalTick = New System.Windows.Forms.Timer(Me.components)
         Me.SuspendLayout()
         '
+        'universalTick
+        '
+        '
         'game
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.SystemColors.ControlDark
         Me.ClientSize = New System.Drawing.Size(1084, 662)
         Me.Name = "game"
         Me.Text = "Form1"
