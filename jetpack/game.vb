@@ -1,29 +1,44 @@
 ﻿Public Class game
-    Dim drawing As Sprite()
+    Dim drawing As List(Of Sprite)
 
-    Public Class Sprite
-        Public coord As Point
-        Public img As Bitmap
-    End Class
+    Structure Direction
+        Dim X As Decimal
+        Dim Y As Decimal
+    End Structure
 
-    Public Sub draw(ByVal sender As Object, ByVal e As PaintEventArgs) Handles MyBase.Paint
+    Structure Sprite
+        Dim coord As Point
+        Dim img As PictureBox
+        Dim dir As Direction
+    End Structure
+
+    Private Sub updateSprites(sender As System.Object, e As System.EventArgs) Handles universalTick.Tick
+        moveSprites()
+        draw()
+    End Sub
+
+    Public Sub moveSprites()
         For Each i In drawing
-            ' Create rectangle for displaying image.
-            Dim destRect As New Rectangle(i.coord.X, i.coord.Y, i.img.Width, i.img.Height)
-
-            ' Draw image to screen.
-            e.Graphics.DrawImage(i.img, destRect)
+            i.coord.X += i.dir.X
+            i.coord.Y += i.dir.Y
         Next
     End Sub
 
-    Private Sub screenUpdate(sender As System.Object, e As System.EventArgs) Handles universalTick.Tick
-        Me.Invalidate()
+    Private Sub draw()
+        For Each i In drawing
+            i.img.Left = i.coord.X
+            i.img.Top = i.coord.Y
+        Next
     End Sub
 
-    Private Sub init() Handles Me.Activated
+    Private Sub init() Handles Me.GotFocus
         Dim player As New Sprite
-        player.coord.X = 0
-        player.coord.Y = 0
-        player.img = My.Resources.mario
+        player.coord.X = 200
+        player.coord.Y = 200
+        player.img.Image = My.Resources.test
+        player.img.SizeMode = PictureBoxSizeMode.StretchImage
+        drawing.Add(player)
+
+        universalTick.Enabled = True
     End Sub
 End Class

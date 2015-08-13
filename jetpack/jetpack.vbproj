@@ -92,6 +92,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Player.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Sprite.vb">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="game.resx">
@@ -118,6 +124,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\mario.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\test.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
