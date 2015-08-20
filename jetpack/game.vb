@@ -1,6 +1,6 @@
 ﻿Public Class game
-    Dim drawing As List(Of Sprite)
-
+    Dim render As New List(Of Sprite)
+    Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort
     Structure Direction
         Dim X As Decimal
         Dim Y As Decimal
@@ -8,26 +8,17 @@
 
     Structure Sprite
         Dim coord As Point
-        Dim img As PictureBox
+        Dim img As Image
         Dim dir As Direction
     End Structure
 
     Private Sub updateSprites(sender As System.Object, e As System.EventArgs) Handles universalTick.Tick
-        moveSprites()
-        draw()
+        Me.Invalidate()
     End Sub
 
-    Public Sub moveSprites()
-        For Each i In drawing
-            i.coord.X += i.dir.X
-            i.coord.Y += i.dir.Y
-        Next
-    End Sub
-
-    Private Sub draw()
-        For Each i In drawing
-            i.img.Left = i.coord.X
-            i.img.Top = i.coord.Y
+    Private Sub draw(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles MyBase.Paint
+        For Each i As Sprite In render
+            e.Graphics.DrawImage(i.img, i.coord.X, i.coord.Y)
         Next
     End Sub
 
@@ -35,10 +26,8 @@
         Dim player As New Sprite
         player.coord.X = 200
         player.coord.Y = 200
-        player.img.Image = My.Resources.test
-        player.img.SizeMode = PictureBoxSizeMode.StretchImage
-        drawing.Add(player)
-
+        player.img = My.Resources.test
+        render.Add(player)
         universalTick.Enabled = True
     End Sub
 End Class
