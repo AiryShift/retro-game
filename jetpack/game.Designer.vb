@@ -23,10 +23,10 @@ Partial Class game
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Me.universalTick = New System.Windows.Forms.Timer(Me.components)
+        Me.EventLoop = New System.Windows.Forms.Timer(Me.components)
         Me.SuspendLayout()
         '
-        'universalTick
+        'EventLoop
         '
         '
         'game
@@ -40,6 +40,6 @@ Partial Class game
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents universalTick As System.Windows.Forms.Timer
+    Friend WithEvents EventLoop As System.Windows.Forms.Timer
 
 End Class

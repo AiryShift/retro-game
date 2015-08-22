@@ -1,6 +1,6 @@
 ﻿Public Class game
     Dim render As New List(Of Sprite)
-    Const PLAYER_GRAVITY As Decimal = 0.5
+    Const PLAYER_GRAVITY As Decimal = 0.6
     Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort
 
     Structure Velocity
@@ -15,17 +15,17 @@
         Public id As String
     End Class
 
-    Private Sub updateSprites(sender As System.Object, e As System.EventArgs) Handles universalTick.Tick
+    Private Sub updateSprites(sender As System.Object, e As System.EventArgs) Handles EventLoop.Tick
         For i As Integer = 0 To render.Count() - 1
             Dim obj = render.Item(i)
-
-            If obj.id = "PLAYER" Then
-            End If
-            'gravity
-            If True Then ' TODO: above ground
-                obj.vel.Y += PLAYER_GRAVITY
-            End If
-
+            Select Case obj.id
+                Case "PLAYER"
+                    'gravity
+                    If True Then ' TODO: above ground
+                        obj.vel.Y += PLAYER_GRAVITY
+                    End If
+                Case Else
+            End Select
             'update positions
             obj.coord.X += obj.vel.X
             obj.coord.Y += obj.vel.Y
@@ -54,6 +54,7 @@
     Private Sub init() Handles Me.GotFocus
         Dim player = initSprite(My.Resources.test, 200, 200, "PLAYER")
         render.Add(player)
-        universalTick.Enabled = True
+        EventLoop.Interval = 1000 / 30
+        EventLoop.Enabled = True
     End Sub
 End Class
