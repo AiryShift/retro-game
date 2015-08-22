@@ -1,11 +1,12 @@
 ﻿Public Class game
     Dim render As New List(Of Sprite)
+    Const PLAYER_GRAVITY As Decimal = 0.5
     Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort
 
-    Class Velocity
-        Public X As Decimal
-        Public Y As Decimal
-    End Class
+    Structure Velocity
+        Dim X As Decimal
+        Dim Y As Decimal
+    End Structure
 
     Class Sprite
         Public coord As Point
@@ -15,29 +16,27 @@
     End Class
 
     Private Sub updateSprites(sender As System.Object, e As System.EventArgs) Handles universalTick.Tick
-        For i As Integer = 0 To render.Count()
-            Dim obj = render(i)
+        For i As Integer = 0 To render.Count() - 1
+            Dim obj = render.Item(i)
 
             If obj.id = "PLAYER" Then
             End If
             'gravity
             If True Then ' TODO: above ground
-                obj.vel.Y -= 0.2
+                obj.vel.Y += PLAYER_GRAVITY
             End If
 
+            'update positions
+            obj.coord.X += obj.vel.X
+            obj.coord.Y += obj.vel.Y
             render(i) = obj
         Next
         Me.Invalidate()
     End Sub
 
     Private Sub draw(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles MyBase.Paint
-        For i As Integer = 0 To render.Count()
-            Dim obj = render(i)
-            'update positions
-            obj.coord.X += obj.vel.X
-            obj.coord.Y += obj.vel.Y
+        For Each obj As Sprite In render
             e.Graphics.DrawImage(obj.img, obj.coord.X, obj.coord.Y)
-            render(i) = obj
         Next
     End Sub
 
