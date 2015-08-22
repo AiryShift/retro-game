@@ -128,6 +128,12 @@
   <ItemGroup>
     <None Include="Resources\test.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\o_550f41f81f96b623-0.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\o_550f41f81f96b623-1.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,6 +1,9 @@
 ﻿Public Class game
     Dim render As New List(Of Sprite)
     Const PLAYER_GRAVITY As Decimal = 0.6
+    Const X_DIR As Boolean = True
+    Const Y_DIR As Boolean = False
+    Dim FISH_1_HASH As Integer = My.Resources.fish_1.GetHashCode()
     Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort
 
     Structure Velocity
@@ -15,7 +18,7 @@
         Public id As String
     End Class
 
-    Private Function isLegalMovement(obj As Sprite) As Boolean
+    Private Function isLegalMovement(pos As Integer, dir As Boolean, vel As Decimal) As Boolean
         Return True
     End Function
 
@@ -28,7 +31,15 @@
                     If True Then ' TODO: above ground
                         obj.vel.Y += PLAYER_GRAVITY
                     End If
-                Case Else
+                Case "FISH"
+                    If obj.img.GetHashCode() = FISH_1_HASH Then
+                        obj.img = My.Resources.fish_2
+                    Else
+                        obj.img = My.Resources.fish_1
+                    End If
+                    If Not isLegalMovement(obj.coord.X, X_DIR, obj.vel.X) Then
+                        obj.vel.X *= -1
+                    End If
             End Select
 
             'Keyboard capture
@@ -42,9 +53,13 @@
             End If
 
             'update positions
-            obj.coord.X += obj.vel.X
-            obj.coord.Y += obj.vel.Y
-            render(i) = obj
+            If isLegalMovement(obj.coord.X, X_DIR, obj.vel.X) Then
+                obj.coord.X += obj.vel.X
+            End If
+            If isLegalMovement(obj.coord.Y, Y_DIR, obj.vel.Y) Then
+                obj.coord.Y += obj.vel.Y
+            End If
+            render.Item(i) = obj
         Next
         Me.Invalidate()
     End Sub
@@ -68,7 +83,9 @@
 
     Private Sub init() Handles Me.GotFocus
         Dim player = initSprite(My.Resources.test, 200, 200, "PLAYER")
+        Dim fish = initSprite(My.Resources.fish_1, 400, 200, "FISH", 5)
         render.Add(player)
+        render.Add(fish)
         EventLoop.Interval = 1000 / 30
         EventLoop.Enabled = True
     End Sub
