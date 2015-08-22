@@ -15,6 +15,10 @@
         Public id As String
     End Class
 
+    Private Function isLegalMovement(obj As Sprite) As Boolean
+        Return True
+    End Function
+
     Private Sub updateSprites(sender As System.Object, e As System.EventArgs) Handles EventLoop.Tick
         For i As Integer = 0 To render.Count() - 1
             Dim obj = render.Item(i)
@@ -26,6 +30,17 @@
                     End If
                 Case Else
             End Select
+
+            'Keyboard capture
+            If GetAsyncKeyState(Convert.ToInt32(Keys.A)) Then
+            End If
+            If GetAsyncKeyState(Convert.ToInt32(Keys.W)) Then
+            End If
+            If GetAsyncKeyState(Convert.ToInt32(Keys.D)) Then
+            End If
+            If GetAsyncKeyState(Convert.ToInt32(Keys.S)) Then
+            End If
+
             'update positions
             obj.coord.X += obj.vel.X
             obj.coord.Y += obj.vel.Y
