@@ -1,8 +1,12 @@
 ﻿Public Class game
     Dim render As New List(Of Sprite)
+    Const LOOP_SPEED As Integer = 1000 / 40
     Const PLAYER_GRAVITY As Decimal = 0.6
     Const X_DIR As Boolean = True
     Const Y_DIR As Boolean = False
+    Const CHECKDIR_NONE As Integer = 0
+    Const CHECKDIR_X As Integer = 1
+    Const CHECKDIR_Y As Integer = 2
     Dim FISH_1_HASH As Integer = My.Resources.fish_1.GetHashCode()
     Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort
 
@@ -18,7 +22,19 @@
         Public id As String
     End Class
 
-    Private Function isLegalMovement(pos As Integer, dir As Boolean, vel As Decimal) As Boolean
+    Private Function isLegalMovement(obj As Sprite, Optional dir As Integer = CHECKDIR_NONE) As Boolean
+        'If no direction is provided, check both direction vectors, returning true/false
+        'If a direction is provided, return true/false if that vector is valid
+        If dir = CHECKDIR_X Or dir = CHECKDIR_NONE Then
+            If obj.coord.X + obj.vel.X < 0 Or obj.coord.X + obj.vel.X > Me.Width - obj.img.Width Then
+                Return False
+            End If
+        End If
+        If dir = CHECKDIR_Y Or dir = CHECKDIR_NONE Then
+            If obj.coord.Y + obj.vel.Y < 0 Or obj.coord.Y + obj.vel.Y > Me.Width - obj.img.Height Then
+                Return False
+            End If
+        End If
         Return True
     End Function
 
@@ -37,7 +53,7 @@
                     Else
                         obj.img = My.Resources.fish_1
                     End If
-                    If Not isLegalMovement(obj.coord.X, X_DIR, obj.vel.X) Then
+                    If Not isLegalMovement(obj, CHECKDIR_X) Then
                         obj.vel.X *= -1
                     End If
             End Select
@@ -53,10 +69,8 @@
             End If
 
             'update positions
-            If isLegalMovement(obj.coord.X, X_DIR, obj.vel.X) Then
+            If isLegalMovement(obj) Then
                 obj.coord.X += obj.vel.X
-            End If
-            If isLegalMovement(obj.coord.Y, Y_DIR, obj.vel.Y) Then
                 obj.coord.Y += obj.vel.Y
             End If
             render.Item(i) = obj
@@ -86,7 +100,7 @@
         Dim fish = initSprite(My.Resources.fish_1, 400, 200, "FISH", 5)
         render.Add(player)
         render.Add(fish)
-        EventLoop.Interval = 1000 / 30
+        EventLoop.Interval = LOOP_SPEED
         EventLoop.Enabled = True
     End Sub
 End Class
