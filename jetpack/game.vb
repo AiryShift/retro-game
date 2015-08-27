@@ -31,7 +31,7 @@
             End If
         End If
         If dir = CHECKDIR_Y Or dir = CHECKDIR_NONE Then
-            If obj.coord.Y + obj.vel.Y < 0 Or obj.coord.Y + obj.vel.Y > Me.Width - obj.img.Height Then
+            If obj.coord.Y + obj.vel.Y < 0 Or obj.coord.Y + obj.vel.Y > Me.Height - obj.img.Height Then
                 Return False
             End If
         End If
@@ -48,13 +48,17 @@
                         obj.vel.Y += PLAYER_GRAVITY
                     End If
                 Case "FISH"
-                    If obj.img.GetHashCode() = FISH_1_HASH Then
-                        obj.img = My.Resources.fish_2
-                    Else
-                        obj.img = My.Resources.fish_1
-                    End If
+                    'If obj.img.GetHashCode() = FISH_1_HASH Then
+                    '    obj.img = My.Resources.fish_2
+                    'Else
+                    '    obj.img = My.Resources.fish_1
+                    'End If
+                    obj.vel.Y += 0.4
                     If Not isLegalMovement(obj, CHECKDIR_X) Then
                         obj.vel.X *= -1
+                    End If
+                    If Not isLegalMovement(obj, CHECKDIR_Y) Then
+                        obj.vel.Y = -20
                     End If
             End Select
 
