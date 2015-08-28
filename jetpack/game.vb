@@ -9,16 +9,16 @@
     Const CHECKDIR_Y As Integer = 2
     Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort
 
-    Private Function isLegalMovement(obj As Sprite, Optional dir As Integer = CHECKDIR_NONE) As Boolean
+    Private Function isLegalMovement(sprite As Sprite, Optional dir As Integer = CHECKDIR_NONE) As Boolean
         'If no direction is provided, check both direction vectors, returning true/false
         'If a direction is provided, return true/false if that vector is valid
         If dir = CHECKDIR_X Or dir = CHECKDIR_NONE Then
-            If obj.coord.X + obj.vel.X < 0 Or obj.coord.X + obj.vel.X > Me.Width - obj.img.Width Then
+            If sprite.coord.X + sprite.vel.X < 0 Or sprite.coord.X + sprite.vel.X > Me.Width - sprite.img.Width Then
                 Return False
             End If
         End If
         If dir = CHECKDIR_Y Or dir = CHECKDIR_NONE Then
-            If obj.coord.Y + obj.vel.Y < 0 Or obj.coord.Y + obj.vel.Y > Me.Height - obj.img.Height Then
+            If sprite.coord.Y + sprite.vel.Y < 0 Or sprite.coord.Y + sprite.vel.Y > Me.Height - sprite.img.Height Then
                 Return False
             End If
         End If
@@ -27,19 +27,19 @@
 
     Private Sub updateSprites(sender As System.Object, e As System.EventArgs) Handles EventLoop.Tick
         For i As Integer = 0 To render.Count() - 1
-            Dim obj = render.Item(i)
-            Select Case obj.id
+            Dim sprite = render.Item(i)
+            Select Case sprite.id
                 Case "PLAYER"
                 Case "FISH"
-                    If Not isLegalMovement(obj, CHECKDIR_X) Then
-                        obj.vel.X *= -1
+                    If Not isLegalMovement(sprite, CHECKDIR_X) Then
+                        sprite.vel.X *= -1
                     End If
-                    If Not isLegalMovement(obj, CHECKDIR_Y) Then
-                        obj.vel.Y = -30
+                    If Not isLegalMovement(sprite, CHECKDIR_Y) Then
+                        sprite.vel.Y = -30
                     End If
             End Select
             If True Then ' TODO: above ground
-                obj.vel.Y += GRAVITY
+                sprite.vel.Y += GRAVITY
             End If
 
             'Keyboard capture
@@ -53,27 +53,28 @@
             End If
 
             'update positions
-            If isLegalMovement(obj) Then
-                obj.coord.X += obj.vel.X
-                obj.coord.Y += obj.vel.Y
+            If isLegalMovement(sprite) Then
+                sprite.coord.X += sprite.vel.X
+                sprite.coord.Y += sprite.vel.Y
             End If
-            render.Item(i) = obj
+            render.Item(i) = sprite
         Next
         Me.Invalidate()
     End Sub
 
     Private Sub draw(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles MyBase.Paint
-        For Each obj As Sprite In render
-            e.Graphics.DrawImage(obj.img, obj.coord.X, obj.coord.Y)
+        For Each sprite As Sprite In render
+            e.Graphics.DrawImage(sprite.img, sprite.coord.X, sprite.coord.Y)
         Next
     End Sub
 
+    Private Sub addToDrawing(sprite As Sprite)
+        render.Add(sprite)
+    End Sub
 
     Private Sub init() Handles Me.GotFocus
-        Dim player = New Sprite(My.Resources.mario, 200, 200, "PLAYER")
-        Dim fish = New Sprite(My.Resources.fish_1, 400, 200, "FISH", 10)
-        render.Add(player)
-        render.Add(fish)
+        addToDrawing(New Sprite(My.Resources.mario, 200, 200, "PLAYER"))
+        addToDrawing(New Sprite(My.Resources.fish_1, 400, 200, "FISH", 10))
         EventLoop.Interval = LOOP_SPEED
         EventLoop.Enabled = True
     End Sub
