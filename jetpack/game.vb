@@ -7,7 +7,6 @@
     Const CHECKDIR_NONE As Integer = 0
     Const CHECKDIR_X As Integer = 1
     Const CHECKDIR_Y As Integer = 2
-    Dim FISH_1_HASH As Integer = My.Resources.fish_1.GetHashCode()
     Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort
 
     Structure Velocity
@@ -53,11 +52,6 @@
             Select Case obj.id
                 Case "PLAYER"
                 Case "FISH"
-                    'If obj.img.GetHashCode() = FISH_1_HASH Then
-                    '    obj.img = My.Resources.fish_2
-                    'Else
-                    '    obj.img = My.Resources.fish_1
-                    'End If
                     If Not isLegalMovement(obj, CHECKDIR_X) Then
                         obj.vel.X *= -1
                     End If
