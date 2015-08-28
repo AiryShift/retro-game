@@ -35,6 +35,7 @@ Partial Class game
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlDark
         Me.ClientSize = New System.Drawing.Size(1084, 662)
+        Me.DoubleBuffered = True
         Me.Name = "game"
         Me.Text = "Form1"
         Me.ResumeLayout(False)

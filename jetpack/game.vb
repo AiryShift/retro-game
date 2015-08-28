@@ -100,11 +100,19 @@
     End Function
 
     Private Sub init() Handles Me.GotFocus
-        Dim player = initSprite(My.Resources.test, 200, 200, "PLAYER")
+        Dim player = initSprite(My.Resources.mario, 200, 200, "PLAYER")
         Dim fish = initSprite(My.Resources.fish_1, 400, 200, "FISH", 5)
         render.Add(player)
         render.Add(fish)
         EventLoop.Interval = LOOP_SPEED
         EventLoop.Enabled = True
     End Sub
+
+    Protected Overrides ReadOnly Property CreateParams As CreateParams
+        Get
+            Dim cp As CreateParams = MyBase.CreateParams
+            cp.ExStyle = cp.ExStyle Or &H2000000
+            Return cp
+        End Get
+    End Property
 End Class
