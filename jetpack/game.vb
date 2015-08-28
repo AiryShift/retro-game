@@ -1,7 +1,7 @@
 ﻿Public Class game
     Dim render As New List(Of Sprite)
     Const LOOP_SPEED As Integer = 1000 / 40
-    Const PLAYER_GRAVITY As Decimal = 0.6
+    Const GRAVITY As Decimal = 0.9
     Const X_DIR As Boolean = True
     Const Y_DIR As Boolean = False
     Const CHECKDIR_NONE As Integer = 0
@@ -20,6 +20,15 @@
         Public img As Image
         Public vel As Velocity
         Public id As String
+
+        Public Sub New(imgIn As Image, x As Integer, y As Integer, idIn As String, Optional xV As Decimal = 0, Optional yV As Decimal = 0)
+            img = imgIn
+            coord.X = x
+            coord.Y = y
+            id = idIn
+            vel.X = xV
+            vel.Y = yV
+        End Sub
     End Class
 
     Private Function isLegalMovement(obj As Sprite, Optional dir As Integer = CHECKDIR_NONE) As Boolean
@@ -43,24 +52,22 @@
             Dim obj = render.Item(i)
             Select Case obj.id
                 Case "PLAYER"
-                    'gravity
-                    If True Then ' TODO: above ground
-                        obj.vel.Y += PLAYER_GRAVITY
-                    End If
                 Case "FISH"
                     'If obj.img.GetHashCode() = FISH_1_HASH Then
                     '    obj.img = My.Resources.fish_2
                     'Else
                     '    obj.img = My.Resources.fish_1
                     'End If
-                    obj.vel.Y += 0.4
                     If Not isLegalMovement(obj, CHECKDIR_X) Then
                         obj.vel.X *= -1
                     End If
                     If Not isLegalMovement(obj, CHECKDIR_Y) Then
-                        obj.vel.Y = -20
+                        obj.vel.Y = -30
                     End If
             End Select
+            If True Then ' TODO: above ground
+                obj.vel.Y += GRAVITY
+            End If
 
             'Keyboard capture
             If GetAsyncKeyState(Convert.ToInt32(Keys.A)) Then
@@ -88,20 +95,10 @@
         Next
     End Sub
 
-    Private Function initSprite(img As Image, x As Integer, y As Integer, id As String, Optional xV As Decimal = 0, Optional yV As Decimal = 0)
-        Dim a As New Sprite
-        a.coord.X = x
-        a.coord.Y = y
-        a.img = img
-        a.id = id
-        a.vel.X = xV
-        a.vel.Y = yV
-        Return a
-    End Function
 
     Private Sub init() Handles Me.GotFocus
-        Dim player = initSprite(My.Resources.mario, 200, 200, "PLAYER")
-        Dim fish = initSprite(My.Resources.fish_1, 400, 200, "FISH", 5)
+        Dim player = New Sprite(My.Resources.mario, 200, 200, "PLAYER")
+        Dim fish = New Sprite(My.Resources.fish_1, 400, 200, "FISH", 10)
         render.Add(player)
         render.Add(fish)
         EventLoop.Interval = LOOP_SPEED
