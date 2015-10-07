@@ -1,5 +1,6 @@
 ﻿Public Class game
     Dim render As New List(Of Sprite)
+    Dim alive As Boolean = True
     Const LOOP_SPEED As Integer = 1000 / 40
     Const GRAVITY As Decimal = 0.9
     Const X_DIR As Boolean = True
@@ -100,7 +101,11 @@
     Private Sub init() Handles Me.GotFocus
         addToDrawing(New Sprite(My.Resources.mario, 200, 200, "PLAYER"))
         addToDrawing(New Sprite(My.Resources.actualfish_1, 400, 200, "FISH", 10))
+        SecondsLoop.Interval = 1000
         EventLoop.Interval = LOOP_SPEED
+        lose.Visible = False
+        alive = True
+        SecondsLoop.Enabled = True
         EventLoop.Enabled = True
     End Sub
 
@@ -111,4 +116,17 @@
             Return cp
         End Get
     End Property
+
+    Private Sub SecondsLoop_Tick(sender As Object, e As EventArgs) Handles SecondsLoop.Tick
+        If alive Then
+            score.Text += 1
+            If Globals.modulus(score.Text, 10) Then
+                score.Text += Globals.random_num(5, 15)
+            End If
+        End If
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles lose.Click
+        Me.Hide()
+    End Sub
 End Class
