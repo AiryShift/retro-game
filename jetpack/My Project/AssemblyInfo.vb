@@ -8,8 +8,8 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("jetpack")> 
-<Assembly: AssemblyDescription("")> 
+<Assembly: AssemblyTitle("Mario Jetpack")>
+<Assembly: AssemblyDescription("A retro mario game. Source can be found at https://github.com/AiryShift/retro-game")>
 <Assembly: AssemblyCompany("DET-NSW")> 
 <Assembly: AssemblyProduct("jetpack")> 
 <Assembly: AssemblyCopyright("Copyright © DET-NSW 2015")> 

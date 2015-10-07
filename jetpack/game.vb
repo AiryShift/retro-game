@@ -30,6 +30,21 @@
             Dim sprite = render.Item(i)
             Select Case sprite.id
                 Case "PLAYER"
+                    'Keyboard capture
+                    If GetAsyncKeyState(Convert.ToInt32(Keys.A)) Then
+                    End If
+                    If GetAsyncKeyState(Convert.ToInt32(Keys.W)) Then
+                        sprite.vel.Y -= 2
+                        If sprite.vel.Y < -20 Then
+                            sprite.vel.Y = -20
+                        End If
+                    ElseIf sprite.vel.Y < 0
+                        sprite.vel.Y += 0.5
+                    End If
+                    If GetAsyncKeyState(Convert.ToInt32(Keys.D)) Then
+                    End If
+                    If GetAsyncKeyState(Convert.ToInt32(Keys.S)) Then
+                    End If
                 Case "FISH"
                     If Not isLegalMovement(sprite, CHECKDIR_X) Then
                         sprite.vel.X *= -1
@@ -40,16 +55,9 @@
             End Select
             If True Then ' TODO: above ground
                 sprite.vel.Y += GRAVITY
-            End If
-
-            'Keyboard capture
-            If GetAsyncKeyState(Convert.ToInt32(Keys.A)) Then
-            End If
-            If GetAsyncKeyState(Convert.ToInt32(Keys.W)) Then
-            End If
-            If GetAsyncKeyState(Convert.ToInt32(Keys.D)) Then
-            End If
-            If GetAsyncKeyState(Convert.ToInt32(Keys.S)) Then
+                If sprite.vel.Y > 20 Then
+                    sprite.vel.Y = 20
+                End If
             End If
 
             'update positions
