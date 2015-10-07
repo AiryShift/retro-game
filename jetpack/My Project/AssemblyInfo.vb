@@ -10,9 +10,9 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("Mario Jetpack")>
 <Assembly: AssemblyDescription("A retro mario game. Source can be found at https://github.com/AiryShift/retro-game")>
-<Assembly: AssemblyCompany("DET-NSW")> 
-<Assembly: AssemblyProduct("jetpack")> 
-<Assembly: AssemblyCopyright("Copyright © DET-NSW 2015")> 
+<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyProduct("jetpack")>
+<Assembly: AssemblyCopyright("Licenced under the MIT Licence")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

@@ -80,7 +80,7 @@
         render.Add(sprite)
     End Sub
 
-    Private Sub init() Handles Me.GotFocus
+    Private Sub init()
         addToDrawing(New Sprite(My.Resources.mario, 200, 200, "PLAYER"))
         addToDrawing(New Sprite(My.Resources.fish_1, 400, 200, "FISH", 10))
         EventLoop.Interval = LOOP_SPEED
