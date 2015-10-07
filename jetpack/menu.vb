@@ -16,6 +16,6 @@
     End Sub
 
     Private Sub music() Handles Me.Load
-        'My.Computer.Audio.Play()
+        My.Computer.Audio.Play(My.Resources._01_super_mario_bros, AudioPlayMode.BackgroundLoop)
     End Sub
 End Class
