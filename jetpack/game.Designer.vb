@@ -27,6 +27,7 @@ Partial Class game
         Me.SecondsLoop = New System.Windows.Forms.Timer(Me.components)
         Me.score = New System.Windows.Forms.Label()
         Me.lose = New System.Windows.Forms.Button()
+        Me.SpawnLoop = New System.Windows.Forms.Timer(Me.components)
         Me.SuspendLayout()
         '
         'EventLoop
@@ -76,5 +77,6 @@ Partial Class game
     Friend WithEvents SecondsLoop As System.Windows.Forms.Timer
     Friend WithEvents score As System.Windows.Forms.Label
     Friend WithEvents lose As System.Windows.Forms.Button
+    Friend WithEvents SpawnLoop As System.Windows.Forms.Timer
 
 End Class

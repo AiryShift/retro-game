@@ -18,4 +18,8 @@
     Private Sub music() Handles Me.Load
         My.Computer.Audio.Play(My.Resources._01_super_mario_bros, AudioPlayMode.BackgroundLoop)
     End Sub
+
+    Private Sub settings_Click(sender As Object, e As EventArgs) Handles settingsbtn.Click
+        settings.ShowDialog()
+    End Sub
 End Class

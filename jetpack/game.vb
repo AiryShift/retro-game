@@ -66,6 +66,8 @@
                         End If
                     ElseIf sprite.vel.Y < 0 And isLegalMovement(sprite, CHECKDIR_Y)
                         sprite.vel.Y += 0.7
+                    ElseIf Not isLegalMovement(sprite, dir:=CHECKDIR_Y) Then
+                        sprite.vel.Y = 0
                     End If
                     If GetAsyncKeyState(Convert.ToInt32(Keys.D)) And Not GetAsyncKeyState(Convert.ToInt32(Keys.A)) Then
                         sprite.vel.X = 10
@@ -77,9 +79,6 @@
                         Else
                             sprite.vel.X = 0
                         End If
-                    End If
-                    If GetAsyncKeyState(Convert.ToInt32(Keys.Space)) Then
-                        sprite.vel.X = 0
                     End If
                     If GetAsyncKeyState(Convert.ToInt32(Keys.S)) Then
                         sprite.vel.Y += 0.2
@@ -101,8 +100,11 @@
             End If
 
             'update positions
-            If isLegalMovement(sprite) Then
-                sprite.coord = New Point(sprite.coord.X + sprite.vel.X, sprite.coord.Y + sprite.vel.Y)
+            If isLegalMovement(sprite, dir:=CHECKDIR_X) Then
+                sprite.coord.X += sprite.vel.X
+            End If
+            If isLegalMovement(sprite, dir:=CHECKDIR_Y) Then
+                sprite.coord.Y += sprite.vel.Y
             End If
             render.Item(i) = sprite
         Next
@@ -119,15 +121,19 @@
         render.Add(sprite)
     End Sub
 
-    Private Sub init() Handles Me.Activated
+    Private Sub realInit() Handles Me.Load
         addToDrawing(New Sprite(My.Resources.mario, 200, 200, "PLAYER"))
-        addToDrawing(New Sprite(My.Resources.actualfish_1, 400, 200, "FISH", 10))
+    End Sub
+
+    Private Sub init() Handles Me.Activated
         SecondsLoop.Interval = 1000
         EventLoop.Interval = LOOP_SPEED
+        SpawnLoop.Interval = 1000 * Globals.random_num(3, 6)
         lose.Visible = False
         alive = True
         SecondsLoop.Enabled = True
         EventLoop.Enabled = True
+        SpawnLoop.Enabled = True
     End Sub
 
     Protected Overrides ReadOnly Property CreateParams As CreateParams
@@ -145,6 +151,14 @@
                 score.Text += Globals.random_num(10, 20)
             End If
         End If
+    End Sub
+
+    Private Sub freeze()
+        alive = False
+        SecondsLoop.Enabled = False
+        EventLoop.Enabled = False
+        SpawnLoop.Enabled = False
+        lose.Visible = True
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles lose.Click
