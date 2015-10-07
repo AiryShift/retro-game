@@ -4,11 +4,9 @@
     End Function
 
     Public Shared Function modulus(a As Integer, b As Integer) As Integer
-        Dim i As Integer = 0
         While a - b >= 0
-            i += 1
             a -= b
         End While
-        Return i
+        Return a
     End Function
 End Class

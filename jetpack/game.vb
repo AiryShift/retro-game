@@ -49,7 +49,15 @@
                 Case "PLAYER"
                     'Keyboard capture
                     If GetAsyncKeyState(Convert.ToInt32(Keys.A)) And Not GetAsyncKeyState(Convert.ToInt32(Keys.D)) Then
+                        sprite.vel.X = -10
                     Else
+                        If sprite.vel.X < 0 Then
+                            sprite.vel.X += 2
+                        ElseIf sprite.vel.X > 0 Then
+                            sprite.vel.X -= 2
+                        Else
+                            sprite.vel.X = 0
+                        End If
                     End If
                     If GetAsyncKeyState(Convert.ToInt32(Keys.W)) Then
                         sprite.vel.Y -= 2.5
@@ -60,8 +68,21 @@
                         sprite.vel.Y += 0.7
                     End If
                     If GetAsyncKeyState(Convert.ToInt32(Keys.D)) And Not GetAsyncKeyState(Convert.ToInt32(Keys.A)) Then
+                        sprite.vel.X = 10
+                    Else
+                        If sprite.vel.X < 0 Then
+                            sprite.vel.X += 2
+                        ElseIf sprite.vel.X > 0 Then
+                            sprite.vel.X -= 2
+                        Else
+                            sprite.vel.X = 0
+                        End If
                     End If
                     If GetAsyncKeyState(Convert.ToInt32(Keys.Space)) Then
+                        sprite.vel.X = 0
+                    End If
+                    If GetAsyncKeyState(Convert.ToInt32(Keys.S)) Then
+                        sprite.vel.Y += 0.2
                     End If
                 Case "FISH"
                     If Not isLegalMovement(sprite, CHECKDIR_X) Then
@@ -80,7 +101,7 @@
             End If
 
             'update positions
-            If isLegalMovement(sprite, checkall:=True) Then
+            If isLegalMovement(sprite) Then
                 sprite.coord = New Point(sprite.coord.X + sprite.vel.X, sprite.coord.Y + sprite.vel.Y)
             End If
             render.Item(i) = sprite
@@ -98,7 +119,7 @@
         render.Add(sprite)
     End Sub
 
-    Private Sub init() Handles Me.GotFocus
+    Private Sub init() Handles Me.Activated
         addToDrawing(New Sprite(My.Resources.mario, 200, 200, "PLAYER"))
         addToDrawing(New Sprite(My.Resources.actualfish_1, 400, 200, "FISH", 10))
         SecondsLoop.Interval = 1000
@@ -120,8 +141,8 @@
     Private Sub SecondsLoop_Tick(sender As Object, e As EventArgs) Handles SecondsLoop.Tick
         If alive Then
             score.Text += 1
-            If Globals.modulus(score.Text, 10) Then
-                score.Text += Globals.random_num(5, 15)
+            If Globals.modulus(score.Text, 10) = 0 Then
+                score.Text += Globals.random_num(10, 20)
             End If
         End If
     End Sub
