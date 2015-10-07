@@ -82,7 +82,7 @@
 
     Private Sub init()
         addToDrawing(New Sprite(My.Resources.mario, 200, 200, "PLAYER"))
-        addToDrawing(New Sprite(My.Resources.fish_1, 400, 200, "FISH", 10))
+        addToDrawing(New Sprite(My.Resources.actualfish_1, 400, 200, "FISH", 10))
         EventLoop.Interval = LOOP_SPEED
         EventLoop.Enabled = True
     End Sub

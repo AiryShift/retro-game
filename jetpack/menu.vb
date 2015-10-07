@@ -14,4 +14,8 @@
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         AboutBox1.ShowDialog()
     End Sub
+
+    Private Sub music(sender As Object, e As EventArgs) Handles Me.Load
+
+    End Sub
 End Class
