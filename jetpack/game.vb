@@ -9,8 +9,14 @@
     Const CHECKDIR_Y As Integer = 2
     Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort
 
+    Private Function intersectsWith(primary As Sprite, reference As Sprite) As Boolean
+        If Rectangle.Intersect(New Rectangle(primary.coord, New Size(primary.img.Width, primary.img.Height)), New Rectangle(reference.coord, New Size(reference.img.Width, reference.img.Height))).Size() = New Size(0, 0) Then
+            Return True
+        End If
+        Return False
+    End Function
 
-    Private Function isLegalMovement(sprite As Sprite, Optional dir As Integer = CHECKDIR_NONE) As Boolean
+    Private Function isLegalMovement(sprite As Sprite, Optional dir As Integer = CHECKDIR_NONE, Optional checkall As Boolean = False) As Boolean
         'If no direction is provided, check both direction vectors, returning true/false
         'If a direction is provided, return true/false if that vector is valid
         If dir = CHECKDIR_X Or dir = CHECKDIR_NONE Then
@@ -23,6 +29,15 @@
                 Return False
             End If
         End If
+        If checkall Then
+            For Each i In render
+                If i.coord <> sprite.coord Then
+                    If intersectsWith(sprite, i) Then
+                        Return False
+                    End If
+                End If
+            Next
+        End If
         Return True
     End Function
 
@@ -32,19 +47,20 @@
             Select Case sprite.id
                 Case "PLAYER"
                     'Keyboard capture
-                    If GetAsyncKeyState(Convert.ToInt32(Keys.A)) Then
+                    If GetAsyncKeyState(Convert.ToInt32(Keys.A)) And Not GetAsyncKeyState(Convert.ToInt32(Keys.D)) Then
+                    Else
                     End If
                     If GetAsyncKeyState(Convert.ToInt32(Keys.W)) Then
-                        sprite.vel.Y -= 2
+                        sprite.vel.Y -= 2.5
                         If sprite.vel.Y < -20 Then
                             sprite.vel.Y = -20
                         End If
-                    ElseIf sprite.vel.Y < 0
-                        sprite.vel.Y += 0.5
+                    ElseIf sprite.vel.Y < 0 And isLegalMovement(sprite, CHECKDIR_Y)
+                        sprite.vel.Y += 0.7
                     End If
-                    If GetAsyncKeyState(Convert.ToInt32(Keys.D)) Then
+                    If GetAsyncKeyState(Convert.ToInt32(Keys.D)) And Not GetAsyncKeyState(Convert.ToInt32(Keys.A)) Then
                     End If
-                    If GetAsyncKeyState(Convert.ToInt32(Keys.S)) Then
+                    If GetAsyncKeyState(Convert.ToInt32(Keys.Space)) Then
                     End If
                 Case "FISH"
                     If Not isLegalMovement(sprite, CHECKDIR_X) Then
@@ -63,9 +79,8 @@
             End If
 
             'update positions
-            If isLegalMovement(sprite) Then
-                sprite.coord.X += sprite.vel.X
-                sprite.coord.Y += sprite.vel.Y
+            If isLegalMovement(sprite, checkall:=True) Then
+                sprite.coord = New Point(sprite.coord.X + sprite.vel.X, sprite.coord.Y + sprite.vel.Y)
             End If
             render.Item(i) = sprite
         Next
@@ -74,7 +89,7 @@
 
     Private Sub draw(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles MyBase.Paint
         For Each sprite As Sprite In render
-            e.Graphics.DrawImage(sprite.img, sprite.coord.X, sprite.coord.Y)
+            e.Graphics.DrawImage(sprite.img, sprite.coord.X, sprite.coord.Y) 'top left corner
         Next
     End Sub
 
