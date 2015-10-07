@@ -83,6 +83,7 @@
       <DependentUpon>game.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="helper.vb" />
     <Compile Include="menu.Designer.vb">
       <DependentUpon>menu.vb</DependentUpon>
     </Compile>

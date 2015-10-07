@@ -15,7 +15,7 @@
         AboutBox1.ShowDialog()
     End Sub
 
-    Private Sub music(sender As Object, e As EventArgs) Handles Me.Load
-
+    Private Sub music() Handles Me.Load
+        'My.Computer.Audio.Play()
     End Sub
 End Class

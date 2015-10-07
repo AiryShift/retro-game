@@ -9,6 +9,7 @@
     Const CHECKDIR_Y As Integer = 2
     Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort
 
+
     Private Function isLegalMovement(sprite As Sprite, Optional dir As Integer = CHECKDIR_NONE) As Boolean
         'If no direction is provided, check both direction vectors, returning true/false
         'If a direction is provided, return true/false if that vector is valid
@@ -50,7 +51,8 @@
                         sprite.vel.X *= -1
                     End If
                     If Not isLegalMovement(sprite, CHECKDIR_Y) Then
-                        sprite.vel.Y = -30
+                        sprite.vel.Y *= -1
+                        sprite.vel.Y -= Globals.random_num(0, 7)
                     End If
             End Select
             If True Then ' TODO: above ground
@@ -80,7 +82,7 @@
         render.Add(sprite)
     End Sub
 
-    Private Sub init()
+    Private Sub init() Handles Me.GotFocus
         addToDrawing(New Sprite(My.Resources.mario, 200, 200, "PLAYER"))
         addToDrawing(New Sprite(My.Resources.actualfish_1, 400, 200, "FISH", 10))
         EventLoop.Interval = LOOP_SPEED
