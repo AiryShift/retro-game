@@ -9,7 +9,7 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("Mario Jetpack")>
-<Assembly: AssemblyDescription("A retro mario game. Source can be found at https://github.com/AiryShift/retro-game")>
+<Assembly: AssemblyDescription("A retro mario game. Use WASD to move the character. Source can be found at https://github.com/AiryShift/retro-game")> 
 <Assembly: AssemblyCompany("")>
 <Assembly: AssemblyProduct("jetpack")>
 <Assembly: AssemblyCopyright("Licenced under the MIT Licence")>

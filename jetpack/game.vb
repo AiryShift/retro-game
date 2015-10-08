@@ -65,7 +65,7 @@
                         If sprite.vel.Y < -20 Then
                             sprite.vel.Y = -20
                         End If
-                    ElseIf sprite.vel.Y < 0 And isLegalMovement(sprite, CHECKDIR_Y)
+                    ElseIf sprite.vel.Y < 0 And isLegalMovement(sprite, CHECKDIR_Y) Then
                         sprite.vel.Y += 0.7
                     ElseIf Not isLegalMovement(sprite, dir:=CHECKDIR_Y) Then
                         sprite.vel.Y = 0
@@ -104,6 +104,7 @@
                 If Globals.dragAndDropped = True Then
                     Globals.dragAndDropped = False
                     life.Visible = True
+                    sprite.coord = New Point(0, 0)
                 Else
                     freeze()
                 End If
@@ -178,5 +179,11 @@
         addToDrawing(New Sprite(My.Resources.actualfish_1, 400, Globals.random_num(200, 800), "FISH", xV:=Globals.random_num(10, 20)))
         SpawnLoop.Interval = 1000 * Globals.random_num(4, 6)
         life.Visible = False
+    End Sub
+
+    Private Sub sound(sender As Object, e As EventArgs) Handles MyBase.KeyDown
+        If GetAsyncKeyState(Convert.ToInt32(Keys.W)) Then
+            My.Computer.Audio.Play(My.Resources._01_super_mario_bros, AudioPlayMode.WaitToComplete)
+        End If
     End Sub
 End Class
