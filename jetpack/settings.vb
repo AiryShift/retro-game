@@ -1,5 +1,7 @@
 ﻿Public Class settings
     Dim m_MouseIsDown As Boolean
+    Dim playing As Boolean = True
+
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ' Enable dropping.
         PictureBox2.AllowDrop = True
@@ -38,11 +40,22 @@
         PictureBox2.Image = e.Data.GetData(DataFormats.Bitmap)
         ' If the CTRL key is not pressed, delete the source picture.
         If Not e.KeyState = 8 Then
-            PictureBox1.Image = Nothing
+            PictureBox1.Image = My.Resources.retro_coin
+            Globals.dragAndDropped = True
         End If
     End Sub
 
     Private Sub closebtn_Click(sender As Object, e As EventArgs) Handles closebtn.Click
         Me.Hide()
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        If playing Then
+            My.Computer.Audio.Stop()
+            playing = False
+        Else
+            My.Computer.Audio.Play(My.Resources._01_super_mario_bros, AudioPlayMode.BackgroundLoop)
+            playing = True
+        End If
     End Sub
 End Class

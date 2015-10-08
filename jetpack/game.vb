@@ -11,15 +11,25 @@
     Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort
 
     Private Function intersectsWith(primary As Sprite, reference As Sprite) As Boolean
-        If Rectangle.Intersect(New Rectangle(primary.coord, New Size(primary.img.Width, primary.img.Height)), New Rectangle(reference.coord, New Size(reference.img.Width, reference.img.Height))).Size() = New Size(0, 0) Then
-            Return True
+        If Rectangle.Intersect(New Rectangle(primary.coord, New Size(primary.img.Width, primary.img.Height)), New Rectangle(reference.coord, New Size(reference.img.Width, reference.img.Height))).IsEmpty() Then
+            Return False
         End If
-        Return False
+        Return True
     End Function
 
     Private Function isLegalMovement(sprite As Sprite, Optional dir As Integer = CHECKDIR_NONE, Optional checkall As Boolean = False) As Boolean
         'If no direction is provided, check both direction vectors, returning true/false
         'If a direction is provided, return true/false if that vector is valid
+        If checkall Then
+            For Each i In render
+                If i.coord <> sprite.coord Then
+                    If intersectsWith(sprite, i) Then
+                        Return False
+                    End If
+                End If
+            Next
+            Return True
+        End If
         If dir = CHECKDIR_X Or dir = CHECKDIR_NONE Then
             If sprite.coord.X + sprite.vel.X < 0 Or sprite.coord.X + sprite.vel.X > Me.Width - sprite.img.Width Then
                 Return False
@@ -29,15 +39,6 @@
             If sprite.coord.Y + sprite.vel.Y < 0 Or sprite.coord.Y + sprite.vel.Y > Me.Height - sprite.img.Height Then
                 Return False
             End If
-        End If
-        If checkall Then
-            For Each i In render
-                If i.coord <> sprite.coord Then
-                    If intersectsWith(sprite, i) Then
-                        Return False
-                    End If
-                End If
-            Next
         End If
         Return True
     End Function
@@ -89,13 +90,22 @@
                     End If
                     If Not isLegalMovement(sprite, CHECKDIR_Y) Then
                         sprite.vel.Y *= -1
-                        sprite.vel.Y -= Globals.random_num(0, 7)
+                        sprite.vel.Y -= Globals.random_num(0, 15)
                     End If
             End Select
             If True Then ' TODO: above ground
                 sprite.vel.Y += GRAVITY
                 If sprite.vel.Y > 20 Then
                     sprite.vel.Y = 20
+                End If
+            End If
+
+            If sprite.id = "PLAYER" AndAlso Not isLegalMovement(sprite, checkall:=True) Then
+                If Globals.dragAndDropped = True Then
+                    Globals.dragAndDropped = False
+                    life.Visible = True
+                Else
+                    freeze()
                 End If
             End If
 
@@ -121,14 +131,13 @@
         render.Add(sprite)
     End Sub
 
-    Private Sub realInit() Handles Me.Load
-        addToDrawing(New Sprite(My.Resources.mario, 200, 200, "PLAYER"))
-    End Sub
-
     Private Sub init() Handles Me.Activated
+        render = New List(Of Sprite)
+        addToDrawing(New Sprite(My.Resources.mario, 200, 200, "PLAYER"))
         SecondsLoop.Interval = 1000
         EventLoop.Interval = LOOP_SPEED
         SpawnLoop.Interval = 1000 * Globals.random_num(3, 6)
+        score.Text = "0"
         lose.Visible = False
         alive = True
         SecondsLoop.Enabled = True
@@ -145,7 +154,7 @@
     End Property
 
     Private Sub SecondsLoop_Tick(sender As Object, e As EventArgs) Handles SecondsLoop.Tick
-        If alive Then
+        If alive = True Then
             score.Text += 1
             If Globals.modulus(score.Text, 10) = 0 Then
                 score.Text += Globals.random_num(10, 20)
@@ -163,5 +172,11 @@
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles lose.Click
         Me.Hide()
+    End Sub
+
+    Private Sub SpawnLoop_Tick(sender As Object, e As EventArgs) Handles SpawnLoop.Tick
+        addToDrawing(New Sprite(My.Resources.actualfish_1, 400, Globals.random_num(200, 800), "FISH", xV:=Globals.random_num(10, 20)))
+        SpawnLoop.Interval = 1000 * Globals.random_num(4, 6)
+        life.Visible = False
     End Sub
 End Class

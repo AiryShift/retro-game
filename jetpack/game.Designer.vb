@@ -28,6 +28,7 @@ Partial Class game
         Me.score = New System.Windows.Forms.Label()
         Me.lose = New System.Windows.Forms.Button()
         Me.SpawnLoop = New System.Windows.Forms.Timer(Me.components)
+        Me.life = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'EventLoop
@@ -59,12 +60,29 @@ Partial Class game
         Me.lose.Text = "You lose, press here to exit"
         Me.lose.UseVisualStyleBackColor = True
         '
+        'SpawnLoop
+        '
+        '
+        'life
+        '
+        Me.life.AutoSize = True
+        Me.life.Font = New System.Drawing.Font("Jokerman", 27.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.life.ForeColor = System.Drawing.Color.White
+        Me.life.Location = New System.Drawing.Point(489, 9)
+        Me.life.Name = "life"
+        Me.life.Size = New System.Drawing.Size(369, 55)
+        Me.life.TabIndex = 2
+        Me.life.Text = "You have 1 life left!"
+        Me.life.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.life.Visible = False
+        '
         'game
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlDark
         Me.ClientSize = New System.Drawing.Size(1084, 662)
+        Me.Controls.Add(Me.life)
         Me.Controls.Add(Me.lose)
         Me.Controls.Add(Me.score)
         Me.DoubleBuffered = True
@@ -78,5 +96,6 @@ Partial Class game
     Friend WithEvents score As System.Windows.Forms.Label
     Friend WithEvents lose As System.Windows.Forms.Button
     Friend WithEvents SpawnLoop As System.Windows.Forms.Timer
+    Friend WithEvents life As System.Windows.Forms.Label
 
 End Class
