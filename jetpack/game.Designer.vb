@@ -29,6 +29,7 @@ Partial Class game
         Me.lose = New System.Windows.Forms.Button()
         Me.SpawnLoop = New System.Windows.Forms.Timer(Me.components)
         Me.life = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'EventLoop
@@ -76,12 +77,25 @@ Partial Class game
         Me.life.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.life.Visible = False
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Jokerman", 27.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.White
+        Me.Label1.Location = New System.Drawing.Point(258, 9)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(141, 55)
+        Me.Label1.TabIndex = 3
+        Me.Label1.Text = "Score:"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'game
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlDark
         Me.ClientSize = New System.Drawing.Size(1084, 662)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.life)
         Me.Controls.Add(Me.lose)
         Me.Controls.Add(Me.score)
@@ -97,5 +111,6 @@ Partial Class game
     Friend WithEvents lose As System.Windows.Forms.Button
     Friend WithEvents SpawnLoop As System.Windows.Forms.Timer
     Friend WithEvents life As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
 
 End Class
